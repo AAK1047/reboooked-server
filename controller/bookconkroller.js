@@ -68,6 +68,27 @@ exports.admingetallbook = async (req, res) => {
    }
   };
 
+  //reeject books
+  exports.rejectbook = async (req, res) => {
+    const {id}=req.params
+    const bookId=id
+    console.log(bookId);
+       
+   try {
+
+    const existingBook =await books.findByIdAndUpdate({_id:bookId},{
+       
+        bookstatus:"rejected"
+    },{new:true})
+    
+    await existingBook.save()
+    res.status(200).json(existingBook)
+
+   } catch (error) {
+    res.status(401).json(error)
+   }
+  };
+
   
   // Fetch books with status "listing" for users
   exports.usergetallbook = async (req, res) => {
@@ -213,5 +234,61 @@ exports.admingetallbook = async (req, res) => {
         }
     
     }
+
+    exports.sellingorder = async (req, res) => {
+      const userId =req.payload
+      console.log(userId);
+      
+      try {
+        const listingBooks = await books.find({ userId ,
+          bookstatus: "listing" });
+          const pendingBooks = await books.find({ userId ,
+            bookstatus: "pending" });
+
+            const rejectedBooks = await books.find({ userId ,
+              bookstatus: "rejected" });
+  
+        if (listingBooks.length > 0 || pendingBooks.length>0 || rejectedBooks.length>0 ) {
+          console.log(listingBooks,pendingBooks);
+          
+          res.status(200).json({listingBooks,pendingBooks,rejectedBooks});
+        } else {
+          res.status(404).json("No orderfound");
+        }
+      } catch (error) {
+        res.status(500).json("Something went wrong");
+      }
+    };
+
+    exports.removebook=async(req,res)=>{
+
+      const {id}=req.params
+      const bookId=id
+      console.log(bookId);
+      
+      try {
+  console.log("inside try");
+  
+          const existingItem= await books.findByIdAndDelete({_id:bookId})
+          console.log(existingItem);
+          
+ 
+               res.status(200).json(existingItem)
+              
+             
+         
+      } catch (error) {
+          res.status(401).json(error)
+          console.log(error);
+          
+      }
+  
+      }
+
+
+
+    
+
+    
 
     

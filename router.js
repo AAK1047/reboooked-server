@@ -17,6 +17,15 @@ const cartcontroller=require('./controller/cartcontroller')
 //instance router 
 const router = new express.Router()
 
+//import razorpay
+const razorpay = require('./controller/razorpay')
+
+//razorpay
+router.post('/orders',razorpay.orders)
+
+router.get('/payment/:id')
+
+
 //register
 router.post('/register',userController.register)
 
@@ -26,7 +35,7 @@ router.post('/login',userController.login)
 //all usser
 router.get('/users',userController.alluser)
 
-//add book
+//add book 
 
 router.post('/sellbook',jwtmiddleware, multerconfig.fields([
         { name: 'frontCover', maxCount: 1 }, // One file for front cover
@@ -36,6 +45,12 @@ router.post('/sellbook',jwtmiddleware, multerconfig.fields([
 
 //approve book
 router.put('/approve-book/:id',bookcontroller.approvebook)
+
+//reject book
+router.put('/reject-book/:id',bookcontroller.rejectbook)
+
+//remove book
+router.delete('/remove-book/:id',bookcontroller.removebook)
 
 //allbook
 router.get('/all-books',bookcontroller.usergetallbook)
@@ -60,6 +75,9 @@ router.post('/add-cart/:id',jwtmiddleware,cartcontroller.addtocart)
 
 //get cart items
 router.get('/get-cart',jwtmiddleware,cartcontroller.getcart)
+
+//get selling orders
+router.get('/get-sell-order',jwtmiddleware,bookcontroller.sellingorder)
 
 //add to cart
 router.post('/remove-cart/:id',jwtmiddleware,cartcontroller.removefromcart)
