@@ -46,6 +46,9 @@ router.post('/sellbook',jwtmiddleware, multerconfig.fields([
 //approve book
 router.put('/approve-book/:id',bookcontroller.approvebook)
 
+//order book
+router.put('/order-book/:id',jwtmiddleware, bookcontroller.orderbook)
+
 //reject book
 router.put('/reject-book/:id',bookcontroller.rejectbook)
 
@@ -73,11 +76,17 @@ router.get('/text-books',bookcontroller.gettextbook)
 //add to cart
 router.post('/add-cart/:id',jwtmiddleware,cartcontroller.addtocart)
 
+//edit profile
+router.put('/editprofile',jwtmiddleware,userController.editprofile)
+
 //get cart items
 router.get('/get-cart',jwtmiddleware,cartcontroller.getcart)
 
 //get selling orders
 router.get('/get-sell-order',jwtmiddleware,bookcontroller.sellingorder)
+
+//get ordered books
+router.get('/ordered-books',jwtmiddleware,bookcontroller.orderedbook)
 
 //add to cart
 router.post('/remove-cart/:id',jwtmiddleware,cartcontroller.removefromcart)

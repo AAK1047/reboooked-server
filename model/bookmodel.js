@@ -33,6 +33,18 @@ const bookschema = new mongoose.Schema({
         required:true,
         type:String
     },
+   
+    prinumber:{
+       
+        type:String,
+        
+    },
+    secnumber:{
+        
+        type:String,
+        
+    }
+    ,
     userId:{
         required:true,
         type:String
@@ -42,17 +54,7 @@ const bookschema = new mongoose.Schema({
         type:String,
         default:"pending"
     }
-    ,
-    prinumber:{
-        required:true,
-        type:String,
-        
-    },
-    secnumber:{
-        required:true,
-        type:String,
-        
-    }
+
 
 })
 

@@ -6,7 +6,7 @@ const users = require("../model/userModel");
 
 
 exports.register=async(req,res)=>{
-    //logic
+    
     const {username,email,password}=req.body
     console.log(username,email,password);
     try{
@@ -71,3 +71,28 @@ exports.alluser=async(req , res)=>{
     res.status(401).json(error)
    }
 }
+
+exports.editprofile = async (req, res) => {
+
+  const {username , mobno ,address }=req.body
+    console.log(username , mobno , address);
+
+    const userId =req.payload
+    console.log(userId);
+   
+       
+   try {
+
+    const existinguser =await users.findByIdAndUpdate({_id:userId},{
+       
+        username,mobno,address
+
+    },{new:true})
+    
+    await existinguser.save()
+    res.status(200).json(existinguser)
+
+   } catch (error) {
+    res.status(401).json(error)
+   }
+  };

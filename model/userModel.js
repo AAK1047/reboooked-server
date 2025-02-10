@@ -22,7 +22,17 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true,
         default:"user"
-    }
+    },
+    address:{
+       
+        type:String,
+        default:""
+    },
+    mobno:{
+       
+        type:String,
+        default:""
+    },
 })
 
 //create model

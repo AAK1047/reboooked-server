@@ -68,6 +68,33 @@ exports.admingetallbook = async (req, res) => {
    }
   };
 
+  //order books
+  exports.orderbook = async (req, res) => {
+    
+    const userId =req.payload
+    console.log(userId);
+    const {id}=req.params
+    const bookId=id
+    console.log(bookId);
+       
+   try {
+
+    const existingBook =await books.findByIdAndUpdate({_id:bookId},{
+       
+        bookstatus:"sold",
+        userId:userId
+    },{new:true})
+    
+    await existingBook.save()
+    res.status(200).json(existingBook)
+
+   } catch (error) {
+    res.status(401).json(error)
+    console.log(error);
+    
+   }
+  };
+
   //reeject books
   exports.rejectbook = async (req, res) => {
     const {id}=req.params
@@ -252,6 +279,28 @@ exports.admingetallbook = async (req, res) => {
           console.log(listingBooks,pendingBooks);
           
           res.status(200).json({listingBooks,pendingBooks,rejectedBooks});
+        } else {
+          res.status(404).json("No orderfound");
+        }
+      } catch (error) {
+        res.status(500).json("Something went wrong");
+      }
+    };
+
+    exports.orderedbook = async (req, res) => {
+      const userId =req.payload
+      console.log(userId);
+      
+      try {
+
+            const orderedBooks = await books.find({ userId ,
+              bookstatus: "sold" });
+  
+        if (orderedBooks.length > 0  ) {
+          console.log(orderedBooks);
+          
+          res.status(200).json({ orderedBooks });
+
         } else {
           res.status(404).json("No orderfound");
         }
